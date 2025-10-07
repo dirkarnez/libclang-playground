@@ -4,6 +4,11 @@ libclang-playground
 
 ### TODOs
 - [ ] Emscripten?
+  - May not be possible because libclang.dll expects file system of compiler and its includes / lib directories
+    - May skip these so local-file parsing is possible (ignoring standard library, etc)
+
+### Documentation
+- https://libclang.readthedocs.io/_/downloads/en/latest/pdf/
 
 ### Using
 - [dirkarnez/libclang-prebuilt](https://github.com/dirkarnez/libclang-prebuilt)
