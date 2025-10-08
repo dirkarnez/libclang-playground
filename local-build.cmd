@@ -1,0 +1,28 @@
+@REM run as Administrator
+@echo off
+cd /d %~dp0
+set DOWNLOADS_DIR=%USERPROFILE%\Downloads
+set DOWNLOADS_DIR_LINUX=%DOWNLOADS_DIR:\=/%
+
+SET PATH=^
+%WINDIR%\System32;^
+%DOWNLOADS_DIR%\PortableGit\bin;^
+%DOWNLOADS_DIR%\winlibs-x86_64-posix-seh-gcc-11.2.0-mingw-w64-9.0.0-r1\mingw64;^
+%DOWNLOADS_DIR%\winlibs-x86_64-posix-seh-gcc-11.2.0-mingw-w64-9.0.0-r1\mingw64\bin;^
+%DOWNLOADS_DIR%\cmake-3.29.3-windows-x86_64\bin;
+
+@REM set PATH=^
+@REM %WINDIR%\System32;^
+@REM D:\Softwares\winlibs-x86_64-posix-seh-gcc-11.2.0-mingw-w64-9.0.0-r1\mingw64;^
+@REM D:\Softwares\winlibs-x86_64-posix-seh-gcc-11.2.0-mingw-w64-9.0.0-r1\mingw64\bin;^
+@REM D:\Softwares\cmake-3.23.0-rc1-windows-x86_64\bin;
+
+cmake.exe -G"MinGW Makefiles" ^
+-DCMAKE_BUILD_TYPE=Debug ^
+-DLIBCLANG_DIR="%~dp0lib/LLVM-21.1.2-win64" ^
+-B./cmake-build &&^
+cd cmake-build &&^
+cmake --build . &&^
+xcopy /H /Y /C "%~dp0lib\LLVM-21.1.2-win64\bin\libclang.dll" ".\function-visitor\"&&^
+echo Successful build
+pause

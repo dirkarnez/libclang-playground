@@ -1,0 +1,10 @@
+build/
+cmake-build/
+
+compile_commands.json
+
+*.pyc
+*.o
+*.swp
+
+lib/LLVM-21.1.2-win64
