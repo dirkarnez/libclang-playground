@@ -24,5 +24,6 @@ cmake.exe -G"MinGW Makefiles" ^
 cd cmake-build &&^
 cmake --build . &&^
 xcopy /H /Y /C "%~dp0lib\LLVM-21.1.2-win64\bin\libclang.dll" ".\function-visitor\"&&^
+xcopy /H /Y /C "%~dp0lib\LLVM-21.1.2-win64\bin\libclang.dll" ".\ast-walker\"&&^
 echo Successful build
 pause

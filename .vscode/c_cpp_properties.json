@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/lib/LLVM-21.1.2-win64/include/**"
+                "${workspaceFolder}/lib/LLVM-21.1.2-win64/include**"
             ],
             "defines": [
                 "_DEBUG",

@@ -10,19 +10,10 @@
 
 CXChildVisitResult functionVisitor( CXCursor cursor, CXCursor /* parent */, CXClientData /* clientData */ )
 {
-  if( clang_Location_isFromMainFile( clang_getCursorLocation( cursor ) ) == 0 )
+  if( clang_Location_isFromMainFile( clang_getCursorLocation( cursor ) ) == 0 ) 
+  {
     return CXChildVisit_Continue;
-    
-  CXSourceRange extentComment    = clang_Cursor_getCommentRange(cursor);
-  CXSourceLocation startLocationComment = clang_getRangeStart( extentComment );
-  CXSourceLocation endLocationComment   = clang_getRangeEnd( extentComment );
-
-  unsigned int startLineComment = 0, startColumnComment = 0;
-  unsigned int endLineComment   = 0, endColumnComment   = 0;
-
-  clang_getSpellingLocation( startLocationComment, nullptr, &startLineComment, &startColumnComment, nullptr );
-  clang_getSpellingLocation( endLocationComment,   nullptr, &endLineComment, &endColumnComment, nullptr );
-  std::cerr << "  Extent: " << startLineComment << "," << startColumnComment <<  "--" << endLineComment << "," << endColumnComment << "\n";
+  }
 
   CXCursorKind kind = clang_getCursorKind( cursor );
   CXString nameStr  = clang_getCursorSpelling( cursor );
@@ -44,7 +35,7 @@ CXChildVisitResult functionVisitor( CXCursor cursor, CXCursor /* parent */, CXCl
 
     clang_getSpellingLocation( startLocation, nullptr, &startLine, &startColumn, nullptr );
     clang_getSpellingLocation( endLocation,   nullptr, &endLine, &endColumn, nullptr );
-    std::cerr << "  Extent: " << startLine << "," << startColumn <<  "--" << endLine << "," << endColumn << "\n";
+    std::cout << "  Extent: " << startLine << "," << startColumn <<  "--" << endLine << "," << endColumn << "\n";
 
     std::cout << "  " << name << ": " << endLine - startLine << "\n";
   }
@@ -56,7 +47,7 @@ int main( int argc, char** argv )
 {
   if( argc < 2 )
     return -1;
-
+  
   auto resolvedPath = resolvePath( argv[1] );
   std::cerr << "Parsing " << resolvedPath << "...\n";
 
@@ -121,11 +112,9 @@ int main( int argc, char** argv )
     // }
 
     CXIndex index                     = clang_createIndex( false, true );
-    CXTranslationUnit translationUnit = clang_parseTranslationUnit( index, resolvedPath.c_str(), nullptr, 0, 0, 0, CXTranslationUnit_None );
-
+    CXTranslationUnit translationUnit = clang_parseTranslationUnit( index, resolvedPath.c_str(), nullptr, 0, 0, 0, CXTranslationUnit_None | CXTranslationUnit_DetailedPreprocessingRecord | CXTranslationUnit_PrecompiledPreamble | CXTranslationUnit_IncludeBriefCommentsInCodeCompletion);
     CXCursor rootCursor = clang_getTranslationUnitCursor( translationUnit );
     clang_visitChildren( rootCursor, functionVisitor, nullptr );
-
     clang_disposeTranslationUnit( translationUnit );
     clang_disposeIndex( index );
 //  }
